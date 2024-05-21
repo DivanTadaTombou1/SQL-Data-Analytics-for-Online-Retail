@@ -2,7 +2,7 @@
 
 ## Problem Statement
 
-For my GitHub project, I aim to conduct an in-depth data analytics investigation on a fictional online retail database. My goal is to extract meaningful insights into customer behavior, product performance, and sales trends. This dataset consists of interconnected tables representing customers, products, orders, order items, and reviews.
+For this project, I aim to conduct an in-depth data analytics investigation on a fictional online retail database. My goal is to extract meaningful insights into customer behavior, product performance, and sales trends. This dataset consists of interconnected tables representing customers, products, orders, order items, and reviews.
 
 ## Project Goals
 
