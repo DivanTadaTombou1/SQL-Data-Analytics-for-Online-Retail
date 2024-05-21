@@ -245,4 +245,4 @@ LEFT JOIN
 ORDER BY
     cs.total_sales DESC, ps.product_total_sales DESC, ms.month ASC;
 
-```
+
