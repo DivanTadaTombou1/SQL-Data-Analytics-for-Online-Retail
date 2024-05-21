@@ -37,8 +37,7 @@ For my GitHub project, I aim to conduct an in-depth data analytics investigation
 
 By the end of this project, I aim to provide actionable insights to stakeholders, including marketing teams, product managers, and senior management. My objective is to optimize business strategies, improve customer engagement, and drive revenue growth in the online retail domain.
 
-```
-sql
+```sql
 
 WITH CustomerOrderStats AS (
     SELECT
