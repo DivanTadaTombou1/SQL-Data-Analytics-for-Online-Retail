@@ -37,6 +37,9 @@ For this project, I aim to conduct an in-depth data analytics investigation on a
 
 By the end of this project, I aim to provide actionable insights to stakeholders, including marketing teams, product managers, and senior management. My objective is to optimize business strategies, improve customer engagement, and drive revenue growth in the online retail domain.
 
+
+-- Customer Analysis
+
 ```sql
 
 WITH CustomerOrderStats AS (
@@ -62,6 +65,31 @@ WITH CustomerOrderStats AS (
         c.customer_id, c.name, c.region
 ),
 
+CustomerSegments AS (
+    SELECT
+        c.customer_id,
+        c.name,
+        c.region,
+        COALESCE(SUM(o.total_sales), 0) AS total_sales,
+        COALESCE(SUM(o.total_orders), 0) AS total_orders,
+        CASE
+            WHEN COALESCE(SUM(o.total_sales), 0) > 1000 THEN 'High Value'
+            ELSE 'Low Value'
+        END AS value_segment,
+        CASE
+            WHEN COALESCE(SUM(o.total_orders), 0) > 10 THEN 'Frequent Buyer'
+            ELSE 'Infrequent Buyer'
+        END AS frequency_segment
+    FROM
+        customers c
+    LEFT JOIN
+        CustomerOrderStats o ON c.customer_id = o.customer_id
+    GROUP BY
+        c.customer_id, c.name, c.region
+),
+
+-- Product Performance Analysis
+
 ProductStats AS (
     SELECT
         p.product_id,
@@ -84,6 +112,11 @@ ProductStats AS (
     GROUP BY
         p.product_id, p.product_name, p.category
 ),
+
+
+## Sales Trends Analysis
+
+```sql
 
 MonthlySales AS (
     SELECT
@@ -116,47 +149,11 @@ RollingMonthlySales AS (
         MonthlySales
 ),
 
-CustomerLifetimeValue AS (
-    SELECT
-        customer_id,
-        SUM(total_sales) AS lifetime_value,
-        SUM(total_cost) AS lifetime_cost,
-        SUM(total_sales) - SUM(total_cost) AS lifetime_profit,
-        CASE
-            WHEN SUM(total_sales) > 10000 THEN 'Platinum'
-            WHEN SUM(total_sales) BETWEEN 5000 AND 10000 THEN 'Gold'
-            WHEN SUM(total_sales) BETWEEN 1000 AND 5000 THEN 'Silver'
-            ELSE 'Bronze'
-        END AS customer_tier
-    FROM
-        CustomerOrderStats
-    GROUP BY
-        customer_id
-),
 
-CustomerSegments AS (
-    SELECT
-        c.customer_id,
-        c.name,
-        c.region,
-        COALESCE(SUM(o.total_sales), 0) AS total_sales,
-        COALESCE(SUM(o.total_orders), 0) AS total_orders,
-        CASE
-            WHEN COALESCE(SUM(o.total_sales), 0) > 1000 THEN 'High Value'
-            ELSE 'Low Value'
-        END AS value_segment,
-        CASE
-            WHEN COALESCE(SUM(o.total_orders), 0) > 10 THEN 'Frequent Buyer'
-            ELSE 'Infrequent Buyer'
-        END AS frequency_segment
-    FROM
-        customers c
-    LEFT JOIN
-        CustomerOrderStats o ON c.customer_id = o.customer_id
-    GROUP BY
-        c.customer_id, c.name, c.region
-),
 
+## Predictive Modeling
+
+```sql
 ProductPredictiveSales AS (
     SELECT
         product_id,
@@ -196,7 +193,33 @@ ProductSalesTrend AS (
         total_sales - LAG(total_sales, 1) OVER (PARTITION BY product_id ORDER BY month) AS sales_growth
     FROM
         ProductPredictiveSales
+),
+
+## Customer Lifetime Value (CLV)
+
+```sql
+
+CustomerLifetimeValue AS (
+    SELECT
+        customer_id,
+        SUM(total_sales) AS lifetime_value,
+        SUM(total_cost) AS lifetime_cost,
+        SUM(total_sales) - SUM(total_cost) AS lifetime_profit,
+        CASE
+            WHEN SUM(total_sales) > 10000 THEN 'Platinum'
+            WHEN SUM(total_sales) BETWEEN 5000 AND 10000 THEN 'Gold'
+            WHEN SUM(total_sales) BETWEEN 1000 AND 5000 THEN 'Silver'
+            ELSE 'Bronze'
+        END AS customer_tier
+    FROM
+        CustomerOrderStats
+    GROUP BY
+        customer_id
 )
+
+## Final Integrated Query
+
+```sql
 
 SELECT
     cs.customer_id,
