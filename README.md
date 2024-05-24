@@ -37,8 +37,9 @@ For this project, I aim to conduct an in-depth data analytics investigation on a
 
 By the end of this project, I aim to provide actionable insights to stakeholders, including marketing teams, product managers, and senior management. My objective is to optimize business strategies, improve customer engagement, and drive revenue growth in the online retail domain.
 
+```
 
--- Customer Analysis
+## Customer Analysis
 
 ```sql
 
@@ -87,9 +88,11 @@ CustomerSegments AS (
     GROUP BY
         c.customer_id, c.name, c.region
 ),
+```
 
--- Product Performance Analysis
+## Product Performance Analysis
 
+```sql
 ProductStats AS (
     SELECT
         p.product_id,
@@ -113,7 +116,7 @@ ProductStats AS (
         p.product_id, p.product_name, p.category
 ),
 
-
+```
 ## Sales Trends Analysis
 
 ```sql
@@ -148,7 +151,7 @@ RollingMonthlySales AS (
     FROM
         MonthlySales
 ),
-
+```
 
 
 ## Predictive Modeling
@@ -194,7 +197,7 @@ ProductSalesTrend AS (
     FROM
         ProductPredictiveSales
 ),
-
+```
 ## Customer Lifetime Value (CLV)
 
 ```sql
@@ -216,6 +219,7 @@ CustomerLifetimeValue AS (
     GROUP BY
         customer_id
 )
+```
 
 ## Final Integrated Query
 
@@ -266,5 +270,5 @@ LEFT JOIN
     ProductSalesTrend pst ON ps.product_id = pst.product_id AND pst.month = ms.month
 ORDER BY
     cs.total_sales DESC, ps.product_total_sales DESC, ms.month ASC;
-
+```
 
